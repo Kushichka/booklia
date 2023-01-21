@@ -17,14 +17,17 @@ const App = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [resultError, setResultError] = useState('');
   const [inputValue, setInputValue] = useState('');
+  const [sort, setSort] = useState('');
 
-  const onSearch = useCallback(async (inputValue) => {
+  const onSearch = useCallback(async (inputValue, sortValue) => {
     if (!inputValue) return setSearchResults([]);
 
     setIsLoading(true);
+    const sortBy = sortValue.length > 0 ? `&sort=${sortValue}` : '';
+    const url = `http://openlibrary.org/search.json?title=${inputValue}${sortBy}`;
 
     try {
-      const res = await axios.get(`http://openlibrary.org/search.json?title=${inputValue}`);
+      const res = await axios.get(url);
 
       if(res.data.docs.length > 0) {
         setSearchResults(res.data.docs);
@@ -37,15 +40,20 @@ const App = () => {
     }
 
     setIsLoading(false);
+
   }, [inputValue]);
 
   const inputHandle = (value) => {
     setInputValue(value);
   }
 
+  const changeSort = (value) => {
+    value === 'relevance' ? setSort('') : setSort(value);
+  }
+
   useEffect(() => {
-    onSearch(inputValue);
-  }, [inputValue]);
+    onSearch(inputValue, sort);
+  }, [inputValue, sort]);
 
   return (
     <>
@@ -65,6 +73,8 @@ const App = () => {
             <BookList
               searchResults={searchResults}
               resultError={resultError}
+              changeSort={changeSort}
+              sort={sort}
             />
           )}
         </Content>

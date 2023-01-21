@@ -1,0 +1,25 @@
+
+.wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.list {
+    display: flex;
+    gap: 15px;
+}
+
+.item {
+    position: relative;
+    cursor: pointer;
+
+    &:not(:last-child)::after {
+        content: '|';
+        position: absolute;
+        right: -10px;
+        bottom: 5px;
+        pointer-events: none;
+    }
+}
