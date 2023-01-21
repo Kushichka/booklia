@@ -7,22 +7,30 @@ import style from './BookList.module.scss';
 
 export const BookList = ({ searchResults, resultError }) => {
 
+    const [actualPage, setActualPage] = useState(1);
     const [content, setContent] = useState([]);
 
-    const getData = () => {
-        setContent(searchResults.map((item, i) => (
-            <BookItem key={i} {...item} />
-        )));
-    }
+    function getData (from, to) {
+        return (
+            searchResults.slice(from, to).map((item, i) => (
+                <BookItem key={i} {...item} />
+            ))
+        );
+    };
 
     useEffect(() => {
-        getData();
-        console.log(searchResults);
+        const parseFrom = actualPage === 1 ? 0 : (actualPage * 10) - 10;
+        const parseTo = actualPage === 1 ? 10 : actualPage * 10;
+
+        setContent(getData(parseFrom, parseTo));
+    }, [actualPage]);
+
+    useEffect(() => {
+        setContent(getData(0, 10));
     }, [searchResults]);
 
-    const paginationHandler = (page, pageSize) => {
-        console.log('page', page);
-        console.log('pageSize', pageSize);
+    const paginationHandler = (page) => {
+        setActualPage(page);
     }
 
     return (
@@ -36,8 +44,7 @@ export const BookList = ({ searchResults, resultError }) => {
             {content.length > 0 && (
                 <Pagination
                     onChange={paginationHandler}
-                    defaultCurrent={1}
-                    total={content.length}
+                    total={searchResults.length}
                     showSizeChanger={false}
                 />
             )}
