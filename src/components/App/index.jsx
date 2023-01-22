@@ -41,7 +41,7 @@ const App = () => {
 
     setIsLoading(false);
 
-  }, [inputValue]);
+  }, []);
 
   const inputHandle = (value) => {
     setInputValue(value);
