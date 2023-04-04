@@ -37,11 +37,16 @@ export const BookItem = ({ cover_i, title, author_name, first_publish_year, edit
     if(language) {
         languages = language.length > 1 ? `${language.length} languages` : `${language.length} language`
     } else languages = 'unknown languages';
+
+    const handleClick = (e) => {
+        // alert('Hello');
+        console.log(e.target);
+    }
     
     return (
         <>
             <Card hoverable style={{ width: 500 }}>
-                <div className={style.card}>
+                <div className={style.card} onClick={handleClick}>
                     <BookImg cover_i={cover_i} />
 
                     <div className={style.card_info_wrapper}>

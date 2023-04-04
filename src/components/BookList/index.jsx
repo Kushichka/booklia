@@ -15,6 +15,7 @@ export const BookList = ({ searchResults, resultError, changeSort, sort }) => {
     const getData = useCallback((from, to) => {
         return (
             searchResults.slice(from, to).map((item, i) => (
+                
                 <BookItem key={i} {...item} />
             ))
         );
@@ -28,7 +29,7 @@ export const BookList = ({ searchResults, resultError, changeSort, sort }) => {
     }, [actualPage]);
 
     useEffect(() => {
-        setContent(getData(0, 10));
+        setContent(getData(0, 10)); 
     }, [getData]);
 
     const paginationHandler = (page) => {

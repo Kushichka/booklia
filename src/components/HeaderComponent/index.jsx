@@ -10,7 +10,7 @@ export const HeaderComponent = ({onSearch, isLoading}) => {
         <Header>
             <Text style={{marginRight: '10px'}}>Booklia</Text>
             <Search
-                placeholder="input book title"
+                placeholder="Harry Potter"
                 onSearch={onSearch}
                 allowClear
                 loading={isLoading ? true : false}
