@@ -1,10 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Layout } from 'antd';
 
 import { CardSkeleton } from "../CardSkeleton";
 import { BookList } from '../BookList';
 import { HeaderComponent } from '../HeaderComponent';
+import { changeInputValue } from '../../redux/slices/bookSlice';
 
 import 'antd/dist/reset.css';
 import './App.css';
@@ -16,8 +18,10 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [resultError, setResultError] = useState('');
-  const [inputValue, setInputValue] = useState('Harry Potter');
   const [sort, setSort] = useState('');
+
+  const dispatch = useDispatch();
+  const { inputValue } = useSelector(state => state.bookSlice)
 
   const onSearch = useCallback(async (inputValue, sortValue) => {
     if (!inputValue) return setSearchResults([]);
@@ -45,7 +49,7 @@ const App = () => {
   }, []);
 
   const inputHandle = (value) => {
-    setInputValue(value);
+    dispatch(changeInputValue(value));
   }
 
   const changeSort = (value) => {
