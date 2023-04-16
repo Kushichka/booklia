@@ -1,4 +1,7 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from 'antd';
+
+import { changeSort } from '../../redux/slices/bookSlice';
 
 import style from './Sort.module.scss';
 
@@ -10,9 +13,12 @@ const types = [
     {id: 'old', name: 'Old'}
 ]
 
-export const Sort = ({changeSort, sort}) => {
+export const Sort = () => {
+    const dispatch = useDispatch();
+    const { sort } = useSelector(state => state.bookSlice);
+    
     const sortHandler = (e) => {
-        changeSort(e.target.id);
+        e.target.id === 'relevance' ? dispatch(changeSort('')) : dispatch(changeSort(e.target.id));
     }
 
     const elements = types.map(item => {

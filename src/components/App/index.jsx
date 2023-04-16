@@ -1,73 +1,47 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
+import React, { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 import { Layout } from 'antd';
 
+import { fetchAPI } from '../../API/fetchAPI';
 import { CardSkeleton } from "../CardSkeleton";
 import { BookList } from '../BookList';
 import { HeaderComponent } from '../HeaderComponent';
-import { changeInputValue } from '../../redux/slices/bookSlice';
+import { changeSearchResults, changeResultError, changeIsLoading } from '../../redux/slices/bookSlice';
 
 import 'antd/dist/reset.css';
 import './App.css';
 
 const { Content } = Layout;
-const errorMessage = 'No Search Result Found!';
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
-  const [resultError, setResultError] = useState('');
-  const [sort, setSort] = useState('');
-
   const dispatch = useDispatch();
-  const { inputValue } = useSelector(state => state.bookSlice)
+  const { isLoading, sort, currentPage, inputValue } = useSelector(state => state.bookSlice);
 
-  const onSearch = useCallback(async (inputValue, sortValue) => {
-    if (!inputValue) return setSearchResults([]);
-
-    setIsLoading(true);
-    const sortBy = sortValue.length > 0 ? `&sort=${sortValue}` : '';
-    const url = `http://openlibrary.org/search.json?title=${inputValue}${sortBy}&fields=*,availability`;
-    // const url = `http://openlibrary.org/search.json?title=${inputValue}${sortBy}&fields=*,availability&limit=10&page=${currentPage}`;
-
-    try {
-      const res = await axios.get(url);
-
-      if(res.data.docs.length > 0) {
-        setSearchResults(res.data.docs);
-      } else {
-        setResultError(errorMessage);
-      }
-
-    } catch (error) {
-      setResultError(errorMessage);
+  const fetchAPIMemo = useMemo(() => {
+    return async () => {
+      dispatch(changeIsLoading(true));
+  
+      const res = await fetchAPI(inputValue, sort, currentPage);
+  
+      if (res === null || res.data.docs.length === 0) {
+        dispatch(changeResultError('No Search Result Found!'));
+  
+      } else dispatch(changeSearchResults(res.data));
+  
+      dispatch(changeIsLoading(false));
+  
     }
-
-    setIsLoading(false);
-
-  }, []);
-
-  const inputHandle = (value) => {
-    dispatch(changeInputValue(value));
-  }
-
-  const changeSort = (value) => {
-    value === 'relevance' ? setSort('') : setSort(value);
-  }
+  }, [inputValue, sort, currentPage]);
 
   useEffect(() => {
-    onSearch(inputValue, sort);
-  }, [inputValue, sort]);
+    fetchAPIMemo(inputValue, sort, currentPage);          
+  }, [inputValue, sort, currentPage]);  
 
   return (
     <>
       <Layout>
 
-        <HeaderComponent
-          onSearch={inputHandle} 
-          isLoading={isLoading}
-        />
+        <HeaderComponent />
 
         <Content>
           {isLoading ? (
@@ -75,12 +49,7 @@ const App = () => {
           )
           :
           (
-            <BookList
-              searchResults={searchResults}
-              resultError={resultError}
-              changeSort={changeSort}
-              sort={sort}
-            />
+            <BookList />
           )}
         </Content>
         
@@ -90,3 +59,7 @@ const App = () => {
 };
 
 export default App;
+
+
+// need to fix error in console
+// use react-intersection-observer for lazy load

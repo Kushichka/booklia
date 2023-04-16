@@ -1,61 +1,54 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Pagination } from 'antd';
 
 import { Sort } from "../Sort";
 import { BookItem } from "../BookItem";
+import { changeCurrentPage } from '../../redux/slices/bookSlice';
 
 import style from './BookList.module.scss';
-import { useCallback } from "react";
 
-export const BookList = ({ searchResults, resultError, changeSort, sort }) => {
+export const BookList = () => {
 
-    const [actualPage, setActualPage] = useState(1);
     const [content, setContent] = useState([]);
+    const { searchResults, resultError } = useSelector(state => state.bookSlice);
+    const dispatch = useDispatch();
 
-    const getData = useCallback((from, to) => {
-        return (
-            searchResults.slice(from, to).map((item, i) => (
-                
-                <BookItem key={i} {...item} />
-            ))
-        );
+    const getData = async () => {
+        const res = await searchResults.docs.map((item, i) => <BookItem key={i} {...item} />);
+        setContent(res);
+    };
+
+    useEffect(() => {
+        getData(); // console error
     }, [searchResults]);
 
-    useEffect(() => {
-        const parseFrom = actualPage === 1 ? 0 : (actualPage * 10) - 10;
-        const parseTo = actualPage === 1 ? 10 : actualPage * 10;
-
-        setContent(getData(parseFrom, parseTo));
-    }, [actualPage]);
-
-    useEffect(() => {
-        setContent(getData(0, 10)); 
-    }, [getData]);
-
     const paginationHandler = (page) => {
-        setActualPage(page);
+        dispatch(changeCurrentPage(page));
     }
 
     return (
         <div className={style.book_list_wrapper}>
-
-            {content.length > 0 && (
-                <Sort changeSort={changeSort} sort={sort} />
+            {!resultError && (
+                <Sort />
             )}
 
             <div className={style.book_list}>
-                {content.length > 0 ? content : (
+                {!resultError ? content : (
                     <div className={style.book_list_error}>
                         <h1>{resultError}</h1>
-                    </div>)}
+                    </div>
+                )}
             </div>
-            {content.length > 0 && (
+
+            {!resultError && (
                 <Pagination
                     onChange={paginationHandler}
-                    total={searchResults.length}
+                    total={searchResults.numFound}
                     showSizeChanger={false}
                 />
             )}
+
         </div>
     );
 };
