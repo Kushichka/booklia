@@ -1,4 +1,5 @@
 import { Typography, Tooltip, Card, Row, Col } from 'antd';
+import { useNavigate } from 'react-router-dom'
 
 import { BookImg } from '../BookImg';
 import { CardButtons } from '../CardButtons';
@@ -7,7 +8,9 @@ import style from './BookItem.module.scss';
 
 const { Title, Text } = Typography;
 
-export const BookItem = ({ cover_i, title, author_name, first_publish_year, edition_count, language }) => {
+export const BookItem = ({ id, cover_i, title, author_name, first_publish_year, edition_count, language }) => {
+
+    const navigate = useNavigate();
     
     const bookTitle = checkLength(title, 50);
     let languages = '';
@@ -38,9 +41,8 @@ export const BookItem = ({ cover_i, title, author_name, first_publish_year, edit
         languages = language.length > 1 ? `${language.length} languages` : `${language.length} language`
     } else languages = 'unknown languages';
 
-    const handleClick = (e) => {
-        // alert('Hello');
-        console.log(e.target);
+    const handleClick = () => {
+        navigate(id);
     }
     
     return (

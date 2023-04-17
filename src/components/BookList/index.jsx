@@ -11,16 +11,16 @@ import style from './BookList.module.scss';
 export const BookList = () => {
 
     const [content, setContent] = useState([]);
-    const { searchResults, resultError } = useSelector(state => state.bookSlice);
+    const { searchResults, resultError, currentPage } = useSelector(state => state.bookSlice);
     const dispatch = useDispatch();
 
     const getData = async () => {
-        const res = await searchResults.docs.map((item, i) => <BookItem key={i} {...item} />);
+        const res = await searchResults.docs?.map((item, i) => <BookItem key={i} id={item.key} {...item} />);
         setContent(res);
     };
 
     useEffect(() => {
-        getData(); // console error
+        getData();
     }, [searchResults]);
 
     const paginationHandler = (page) => {
@@ -43,6 +43,7 @@ export const BookList = () => {
 
             {!resultError && (
                 <Pagination
+                    current={currentPage}
                     onChange={paginationHandler}
                     total={searchResults.numFound}
                     showSizeChanger={false}
