@@ -2,11 +2,22 @@ import { Image, Skeleton } from 'antd';
 
 import style from './BookImg.module.scss';
 
-export const BookImg = ({ cover_i }) => {
+const imgSize = {
+    m: { height: 200, width: 125 },
+    l: { height: 395, width: 248 }
+}
+
+const baseURL = `https://covers.openlibrary.org/b/id`
+
+export const BookImg = ({ cover, size }) => {
+
+    const imgSrc = size === 'm' ? 
+        `${baseURL}/${cover}-M.jpg` : 
+        `${baseURL}/${cover}-L.jpg`;
 
     return (
         <div className={style.card_img}>
-            {!cover_i ? (
+            {!cover ? (
                 <div className={style.img_empty}>
                     <Skeleton.Image />
                 </div>
@@ -14,12 +25,10 @@ export const BookImg = ({ cover_i }) => {
             : 
             (
                 <Image
-                    height={200}
-                    width={125}
-                    src={`https://covers.openlibrary.org/b/id/${cover_i}-M.jpg`}
-                    preview={{
-                        src: `https://covers.openlibrary.org/b/id/${cover_i}-L.jpg`,
-                    }}
+                    height={size === 'm' ? imgSize.m.height : imgSize.l.height}
+                    width={size === 'm' ? imgSize.m.width : imgSize.l.width}
+                    src={imgSrc}
+                    preview={true}
                 />
             )}
         </div>

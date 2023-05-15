@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Input, Typography, Button, Space, Layout } from "antd"
 
-import { changeResultError,changeInputValue } from '../../redux/slices/bookSlice';
+import { changeResultError,changeInputValue } from '../../redux/slices/homePageSlice';
+import { Link } from "react-router-dom";
 
 const { Text } = Typography;
 const { Header } = Layout;
@@ -10,7 +11,7 @@ const { Search } = Input;
 export const HeaderComponent = () => {
 
     const dispatch = useDispatch();
-    const { isLoading } = useSelector(state => state.bookSlice);
+    const { isLoading } = useSelector(state => state.homePageSlice);
 
     
 
@@ -25,7 +26,9 @@ export const HeaderComponent = () => {
 
     return (
         <Header>
-            <Text style={{ marginRight: '10px' }}>Booklia</Text>
+            <Link to={'/'}>
+                <Text style={{ marginRight: '10px' }}>Booklia</Text>
+            </Link>
             <Search
                 placeholder="Harry Potter"
                 onSearch={inputHandler}

@@ -1,0 +1,39 @@
+
+.bookPage_card {
+    display: flex;
+    gap: 24px;
+    max-width: 1000px;
+    justify-content: space-between;
+
+    &_wrapper {
+        display: flex;
+        justify-content: center;
+        padding-top: 50px;
+    }
+
+    &_right {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+
+        & div:last-child {
+            margin-top: 20px;
+        }
+    }
+
+    &_item {
+        align-self: start;
+        font-size: 18px;
+
+        &_title {
+            font-size: 16px;
+            color: #00000073;
+            margin-right: 5px;
+        }
+    }
+
+    &_desc {
+        text-align: left;
+    }
+}

@@ -1,57 +1,51 @@
+import { useDispatch } from 'react-redux';
 import { Typography, Tooltip, Card, Row, Col } from 'antd';
 import { useNavigate } from 'react-router-dom'
 
 import { BookImg } from '../BookImg';
 import { CardButtons } from '../CardButtons';
+import { getBookData, getDescription } from '../../redux/slices/bookSlice';
+import { authors, isPlural, checkLength } from '../../utils/bookInfo';
 
 import style from './BookItem.module.scss';
 
 const { Title, Text } = Typography;
 
-export const BookItem = ({ id, cover_i, title, author_name, first_publish_year, edition_count, language }) => {
+export const BookItem = ({ id, cover_i, title, author_name, first_publish_year, edition_count, language, ratings_average }) => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     
     const bookTitle = checkLength(title, 50);
-    let languages = '';
-    let editions = '';
-    let author = '';
+    const lang = isPlural(language, 'language');
+    const edition = isPlural(edition_count, 'edition');
+    const author = authors(author_name);
 
     const publishYear = first_publish_year ? first_publish_year : 'unknown';
     
-    function checkLength (string, maxLength) {
-        return string.length > maxLength ? `${string.slice(0, maxLength-3)}...` : string;
-    }
-    
-    
-    if(author_name) {
-        if (author_name.length > 1) { // if authors more than 1
-            author_name.map((item, i) => ( // is comma need
-                i > 0 ? author = `${author}, ${item}` : author = item
-            ))
-        } else author = author_name[0];
-
-    } else author = 'unknown';
-    
-    if(edition_count) {
-        editions = edition_count > 1 ? `${edition_count} editions` : `${edition_count} edition`;
-    } else editions = 'unknown editions';
-
-    if(language) {
-        languages = language.length > 1 ? `${language.length} languages` : `${language.length} language`
-    } else languages = 'unknown languages';
-
     const handleClick = () => {
+        dispatch(getDescription(id));
+
+        dispatch(getBookData({
+            title: title,
+            author: author_name,
+            cover: cover_i,
+            publishYear: first_publish_year,
+            editions: edition_count,
+            language: language,
+            ratingAvarage: ratings_average,
+        }));
+
         navigate(id);
     }
     
     return (
         <>
             <Card hoverable style={{ width: 500 }}>
-                <div className={style.card} onClick={handleClick}>
-                    <BookImg cover_i={cover_i} />
+                <div className={style.card}>
+                    <BookImg cover={cover_i} size={'m'} />
 
-                    <div className={style.card_info_wrapper}>
+                    <div className={style.card_info_wrapper} onClick={handleClick}>
                         <Row>
                             <Col>
                                 <Tooltip title={title}>
@@ -68,7 +62,7 @@ export const BookItem = ({ id, cover_i, title, author_name, first_publish_year, 
                         </Row>
                         <Row>
                             <Col>
-                                <Text type="secondary">{editions} in {languages}</Text>
+                                <Text type="secondary">{edition} in {lang}</Text>
                             </Col>
                         </Row>
                         <Row>

@@ -1,20 +1,17 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { fetchAPI } from "../../API/fetchAPI";
+import { fetchDescription } from "../../API/fetchDescription";
 
 const initialState = {
-    inputValue: 'Harry Potter',
-    sort: '',
-    currentPage: 1,
-    searchResults: [],
-    resultError: '',
+    data: [],
+    description: '',
     isLoading: false
-}
+};
 
-export const getBooks = createAsyncThunk(
-    'book/getBooks',
-    async ({inputValue, sort, currentPage}) => {
-        const res = await fetchAPI(inputValue, sort, currentPage);
+export const getDescription = createAsyncThunk(
+    'book/getDescription',
+    async (id) => {
+        const res = await fetchDescription(id);
         return res;
     }
 );
@@ -23,55 +20,37 @@ const bookSlice = createSlice({
     name: 'book',
     initialState,
     reducers: {
-        changeInputValue: (state, action) => {
-            state.inputValue = action.payload;
+        setDescription: (state, payload) => {
+            state.description = payload;
         },
-        changeSort: (state, action) => {
-            state.sort = action.payload;
-        },
-        changeCurrentPage: (state, action) => {
-            state.currentPage = action.payload;
-        },
-        changeSearchResults: (state, action) => {
-            state.searchResults = action.payload;
-        },
-        changeResultError: (state, action) => {
-            state.resultError = action.payload;
-        },
-        changeIsLoading: (state, action) => {
-            state.isLoading = action.payload;
+        getBookData: (state, payload) => {
+            state.data = payload.payload;
         }
     },
     extraReducers: builder => {
-        builder.addCase(getBooks.pending, state => {
-            state.isLoading = true;
-        })
-        .addCase(getBooks.fulfilled, (state, { payload }) => {
-            console.log(payload);
-            if (payload === null || payload.docs.length === 0) {
-                state.resultError = 'No Search Result Found!';
-            } else {
-                state.resultError = '';
-                state.searchResults = payload;
-            }
+        builder
+            .addCase(getDescription.pending, state => {
+                state.isLoading = true;
+            })
+            .addCase(getDescription.fulfilled, (state, { payload }) => {
+                if(!payload) {
+                    state.description = '';
+                } else {
+                    state.description = payload.description;
+                }
 
-            state.isLoading = false;
-        })
-        .addCase(getBooks.rejected, state => {
-            state.resultError = 'No Search Result Found!';
-            state.isLoading = false;
-        })
+                state.isLoading = false;
+            })
+            .addCase(getDescription.rejected, state => {
+                state.description = '';
+                state.isLoading = false;
+            });
     }
 });
 
 export default bookSlice.reducer;
 
 export const {
-    changeInputValue, 
-    changeSort,
-    changeCurrentPage,
-    changeSearchResults,
-    changeResultError,
-    changeIsLoading
-
+    setDescription,
+    getBookData
 } = bookSlice.actions;

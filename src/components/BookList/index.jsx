@@ -4,14 +4,14 @@ import { Pagination } from 'antd';
 
 import { Sort } from "../Sort";
 import { BookItem } from "../BookItem";
-import { changeCurrentPage } from '../../redux/slices/bookSlice';
+import { changeCurrentPage } from '../../redux/slices/homePageSlice';
 
 import style from './BookList.module.scss';
 
 export const BookList = () => {
 
     const [content, setContent] = useState([]);
-    const { searchResults, resultError, currentPage } = useSelector(state => state.bookSlice);
+    const { searchResults, resultError, currentPage } = useSelector(state => state.homePageSlice);
     const dispatch = useDispatch();
 
     const getData = async () => {
