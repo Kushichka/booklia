@@ -36,7 +36,11 @@ const bookSlice = createSlice({
                 if(!payload) {
                     state.description = '';
                 } else {
-                    state.description = payload.description;
+                    if(typeof payload.description === 'object') {
+                        state.description = payload.description.value;
+                    } else {
+                        state.description = payload.description;
+                    }
                 }
 
                 state.isLoading = false;

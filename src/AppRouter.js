@@ -11,5 +11,6 @@ export const AppRouter = createBrowserRouter([
   {
     path: 'works/:bookId',
     element: <BookPage />
-  },
+  }
+  
 ]);

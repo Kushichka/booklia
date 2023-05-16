@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from 'antd';
 
-import { changeSort, changeCurrentPage } from '../../redux/slices/homePageSlice';
+import { changeSort, changeCurrentPage, changeSearchResults } from '../../redux/slices/homePageSlice';
 
 import style from './Sort.module.scss';
 
@@ -18,6 +18,8 @@ export const Sort = () => {
     const { sort } = useSelector(state => state.homePageSlice);
     
     const sortHandler = (e) => {
+        dispatch(changeSearchResults([]));
+
         if(e.target.id === 'relevance') {
             dispatch(changeSort(''));
         } else {

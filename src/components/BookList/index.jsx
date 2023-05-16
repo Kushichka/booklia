@@ -4,7 +4,7 @@ import { Pagination } from 'antd';
 
 import { Sort } from "../Sort";
 import { BookItem } from "../BookItem";
-import { changeCurrentPage } from '../../redux/slices/homePageSlice';
+import { changeCurrentPage, changeSearchResults } from '../../redux/slices/homePageSlice';
 
 import style from './BookList.module.scss';
 
@@ -24,6 +24,7 @@ export const BookList = () => {
     }, [searchResults]);
 
     const paginationHandler = (page) => {
+        dispatch(changeSearchResults([]));
         dispatch(changeCurrentPage(page));
     }
 

@@ -1,6 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-import { fetchAllBooks } from "../../API/fetchAllBooks";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     inputValue: 'Harry Potter',
@@ -10,14 +8,6 @@ const initialState = {
     resultError: '',
     isLoading: false
 }
-
-export const getAllBooks = createAsyncThunk(
-    'home/getAllBooks',
-    async ({inputValue, sort, currentPage}) => {
-        const res = await fetchAllBooks(inputValue, sort, currentPage);
-        return res;
-    }
-);
 
 const homePageSlice = createSlice({
     name: 'home',
@@ -41,26 +31,6 @@ const homePageSlice = createSlice({
         changeIsLoading: (state, action) => {
             state.isLoading = action.payload;
         }
-    },
-    extraReducers: builder => {
-        builder
-            .addCase(getAllBooks.pending, state => {
-                state.isLoading = true;
-            })
-            .addCase(getAllBooks.fulfilled, (state, { payload }) => {
-                if (payload === null || payload.docs.length === 0) {
-                    state.resultError = 'No Search Result Found!';
-                } else {
-                    state.resultError = '';
-                    state.searchResults = payload;
-                }
-
-                state.isLoading = false;
-            })
-            .addCase(getAllBooks.rejected, state => {
-                state.resultError = 'No Search Result Found!';
-                state.isLoading = false;
-            });            
     }
 });
 

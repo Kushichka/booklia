@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Input, Typography, Button, Space, Layout } from "antd"
 
-import { changeResultError,changeInputValue } from '../../redux/slices/homePageSlice';
+import { changeResultError, changeInputValue, changeSearchResults } from '../../redux/slices/homePageSlice';
 import { Link } from "react-router-dom";
 
 const { Text } = Typography;
@@ -9,9 +9,8 @@ const { Header } = Layout;
 const { Search } = Input;
 
 export const HeaderComponent = () => {
-
     const dispatch = useDispatch();
-    const { isLoading } = useSelector(state => state.homePageSlice);
+    const { isLoading, inputValue } = useSelector(state => state.homePageSlice);
 
     
 
@@ -20,8 +19,11 @@ export const HeaderComponent = () => {
             return dispatch(changeResultError('Input title name!'));
         }
 
-        dispatch(changeResultError(''));
-        dispatch(changeInputValue(value));
+        if(value !== inputValue) {
+            dispatch(changeSearchResults([]));
+            dispatch(changeResultError(''));
+            dispatch(changeInputValue(value));
+        }
     }
 
     return (
@@ -33,7 +35,7 @@ export const HeaderComponent = () => {
                 placeholder="Harry Potter"
                 onSearch={inputHandler}
                 allowClear
-                loading={isLoading ? true : false}
+                loading={isLoading}
                 style={{ marginRight: '10px' }}
             />
             <Space>
