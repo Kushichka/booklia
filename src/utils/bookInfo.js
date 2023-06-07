@@ -28,10 +28,14 @@ export const isPlural = (value, singularName) => {
     return result;
 }
 
-export const checkLength = (string, maxLength) => {
+export const checkLength = (string='', maxLength) => {
     const result = string.length > maxLength ? `${string.slice(0, maxLength-3)}...` : string;
 
     return result;
 
 };
+
+export const sortValue = (value) => (
+    value === 'relevance' ? '' : value
+)
 

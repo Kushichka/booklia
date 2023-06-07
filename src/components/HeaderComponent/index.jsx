@@ -1,48 +1,70 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Input, Typography, Button, Space, Layout } from "antd"
+import { Link, useNavigate } from "react-router-dom";
+import { Input, Typography, Button, Space } from "antd";
 
-import { changeResultError, changeInputValue, changeSearchResults } from '../../redux/slices/homePageSlice';
-import { Link } from "react-router-dom";
+import { changeInputValue, changeCurrentPage, changeSort, getAllBooks } from '../../redux/slices/searchSlice';
+
+import style from './HeaderComponent.module.scss';
 
 const { Text } = Typography;
-const { Header } = Layout;
 const { Search } = Input;
 
 export const HeaderComponent = () => {
     const dispatch = useDispatch();
-    const { isLoading, inputValue } = useSelector(state => state.homePageSlice);
+    const navigate = useNavigate();
+    const { isLoading, inputValue } = useSelector(state => state.searchSlice);
 
-    
+    const logoStyles = {
+        fontSize: '30px',
+        color: '#fff',
+        cursor: 'pointer'
+    }
 
-    const inputHandler = (value) => {
-        if(value.length === 0) {
-            return dispatch(changeResultError('Input title name!'));
-        }
+    const getBooks = async (title, sortBy='', page=1) => {
+        navigate(`search?title=${encodeURIComponent(title)}`);
+        
+        dispatch(getAllBooks({title, sortBy, page}));
+    };
 
-        if(value !== inputValue) {
-            dispatch(changeSearchResults([]));
-            dispatch(changeResultError(''));
-            dispatch(changeInputValue(value));
+    const searchHandler = (value) => {
+        if(value.length !== 0) {
+            // dispatch(changeInputValue(value));
+            dispatch(changeCurrentPage(1));
+            dispatch(changeSort(''));
+
+            getBooks(value);
         }
     }
 
+    const onChangeHandler = (e) => {
+        dispatch(changeInputValue(e.target.value));
+    }
+
+    const logoHandler = () => {
+        navigate('/', {replace: true});
+        dispatch(changeInputValue(''));
+    }
+
     return (
-        <Header>
-            <Link to={'/'}>
-                <Text style={{ marginRight: '10px' }}>Booklia</Text>
-            </Link>
+        <div className={style.header_wrapper}>
+
+            {/* <Link to={'/'} replace={true}> */}
+                <Text style={logoStyles} onClick={logoHandler}>Booklia</Text>
+            {/* </Link> */}
             <Search
                 placeholder="Harry Potter"
-                onSearch={inputHandler}
+                onSearch={searchHandler}
+                onChange={onChangeHandler}
                 allowClear
                 loading={isLoading}
-                style={{ marginRight: '10px' }}
+                style={{maxWidth: '300px'}}
+                value={inputValue}
             />
-            <Space>
+            <Space size='middle'>
                 <Button type="primary">Login</Button>
                 <Button>SignUp</Button>
                 {/* <Button shape="circle" size='large' icon={<UserOutlined />} /> */}
             </Space>
-        </Header>
+        </div>
     )
 }

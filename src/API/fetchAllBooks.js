@@ -1,10 +1,10 @@
 const baseURL = 'http://openlibrary.org/search.json';
 
-export const fetchAllBooks = async (text, sortBy, page) => {
+export const fetchAllBooks = async (text, sortBy='', page=1) => {
     
+    const url = `${baseURL}?title=${text}&sort=${sortBy}&fields=*,availability&limit=10&page=${page}`;
+
     try {
-        const url = `${baseURL}?title=${text}&sort=${sortBy}&fields=*,availability&limit=10&page=${page}`;
-        
         const res = await fetch(url)
         .then(res => res.json());
 

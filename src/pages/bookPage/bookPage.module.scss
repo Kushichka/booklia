@@ -1,0 +1,20 @@
+
+.bookPage {
+
+    &_goBack {
+        display: inline-block;
+
+        &_wrapper {
+            margin-bottom: 20px;
+        }
+        
+        &:hover {
+            cursor: pointer;
+        }
+    
+        &::before {
+            content: '<';
+            margin-right: 5px;
+        }
+    }
+}

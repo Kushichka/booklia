@@ -1,6 +1,7 @@
 
 .wrapper {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
@@ -9,6 +10,7 @@
 .list {
     display: flex;
     gap: 15px;
+    margin: 0;
 }
 
 .item {

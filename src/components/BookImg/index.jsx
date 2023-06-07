@@ -16,7 +16,7 @@ export const BookImg = ({ cover, size }) => {
         `${baseURL}/${cover}-L.jpg`;
 
     return (
-        <div className={style.card_img}>
+        <>
             {!cover ? (
                 <div className={style.img_empty}>
                     <Skeleton.Image />
@@ -31,6 +31,6 @@ export const BookImg = ({ cover, size }) => {
                     preview={true}
                 />
             )}
-        </div>
+        </>
     );
 };

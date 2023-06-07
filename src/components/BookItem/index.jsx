@@ -1,10 +1,11 @@
-import { useDispatch } from 'react-redux';
-import { Typography, Tooltip, Card, Row, Col } from 'antd';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Typography, Tooltip, Card } from 'antd';
 import { useNavigate } from 'react-router-dom'
 
 import { BookImg } from '../BookImg';
 import { CardButtons } from '../CardButtons';
-import { getBookData, getDescription } from '../../redux/slices/bookSlice';
+import { setBookData, getDescription } from '../../redux/slices/bookSlice';
 import { authors, isPlural, checkLength } from '../../utils/bookInfo';
 
 import style from './BookItem.module.scss';
@@ -15,18 +16,26 @@ export const BookItem = ({ id, cover_i, title, author_name, first_publish_year, 
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    
+
+    const { inputValue, sort, currentPage } = useSelector(state => state.searchSlice);
+
+
     const bookTitle = checkLength(title, 50);
     const lang = isPlural(language, 'language');
     const edition = isPlural(edition_count, 'edition');
     const author = authors(author_name);
 
     const publishYear = first_publish_year ? first_publish_year : 'unknown';
-    
-    const handleClick = () => {
+
+    const handleClick = useCallback(() => {
+        localStorage.setItem('bookId', id);
+        localStorage.setItem('inputValue', inputValue);
+        localStorage.setItem('sort', sort);
+        localStorage.setItem('page', currentPage);
+
         dispatch(getDescription(id));
 
-        dispatch(getBookData({
+        dispatch(setBookData({
             title: title,
             author: author_name,
             cover: cover_i,
@@ -37,48 +46,34 @@ export const BookItem = ({ id, cover_i, title, author_name, first_publish_year, 
         }));
 
         navigate(id);
-    }
-    
+    }, [id]);
+
     return (
-        <>
-            <Card hoverable style={{ width: 500 }}>
-                <div className={style.card}>
-                    <BookImg cover={cover_i} size={'m'} />
+        <div className={style.bookItem_wrapper}>
+            <Card>
+                <div className={style.bookItem_inner}>
 
-                    <div className={style.card_info_wrapper} onClick={handleClick}>
-                        <Row>
-                            <Col>
-                                <Tooltip title={title}>
-                                    <Title level={3}>{bookTitle}</Title>
-                                </Tooltip>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Tooltip title={author}>
-                                    <p className={style.card_author}>By {checkLength(author, 70)}</p>
-                                </Tooltip>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Text type="secondary">{edition} in {lang}</Text>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Text type="secondary">First published in {publishYear}</Text>
-                            </Col>
-                        </Row>
+                    <div className={style.bookItem_left}>
+                        <BookImg cover={cover_i} size={'m'} />
+                        <CardButtons />
+                    </div>
+                    
+                    <div className={style.bookItem_right} onClick={handleClick}>
+                        <Tooltip title={title}>
+                            <Title style={{ textAlign: 'center' }} level={3}>{bookTitle}</Title>
+                        </Tooltip>
 
-                        <Row>
-                            <Col>
-                                <CardButtons />
-                            </Col>
-                        </Row>
+                        <Tooltip title={author}>
+                            <Text style={{textAlign: 'center'}}>By {checkLength(author, 70)}</Text>
+                        </Tooltip>
+
+                        <Text type="secondary">{edition} in {lang}</Text>
+
+                        <Text type="secondary">First published in {publishYear}</Text>
                     </div>
                 </div>
+
             </Card>
-        </>
+        </div>
     );
 };

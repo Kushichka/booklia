@@ -1,16 +1,26 @@
 
-.card {
-    display: flex;
+.bookItem {
 
-    &_info_wrapper {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+    &_wrapper {
+        width: 500px;
     }
 
-    &_author {
-        font-size: 18px;
-        margin: 0;
-        text-align: left;
+    &_inner {
+        display: flex;
+        gap: 20px;
+    }
+
+    &_left {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &_right {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        cursor: pointer;
     }
 }

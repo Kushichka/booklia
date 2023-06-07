@@ -1,12 +1,11 @@
 
-.book_list {
-    
+.bookListSkeleton {
+
     &_wrapper {
         display: flex;
         flex-wrap: wrap;
-        gap: 20px;
         justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
+        gap: 20px;
     }
 }
+

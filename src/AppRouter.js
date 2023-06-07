@@ -1,16 +1,29 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { HomePage } from './pages/homePage';
-import { BookPage } from './pages/bookPage';
+import { HomePage } from './pages/HomePage';
+import { SearchPage } from './pages/SearchPage';
+import { BookPage } from './pages/BookPage';
+import { Root } from './components/Root';
+import { PageNotFound } from './pages/PageNotFound';
 
 export const AppRouter = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />
-  },
-  {
-    path: 'works/:bookId',
-    element: <BookPage />
-  }
-  
+    element: <Root />,
+    errorElement: <PageNotFound />,
+    children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
+      {
+        path: 'search',
+        element: <SearchPage />
+      },
+      {
+        path: 'works/:bookId',
+        element: <BookPage />
+      }
+    ]
+  }  
 ]);
