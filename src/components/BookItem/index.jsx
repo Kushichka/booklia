@@ -7,6 +7,7 @@ import { BookImg } from '../BookImg';
 import { CardButtons } from '../CardButtons';
 import { setBookData, getDescription } from '../../redux/slices/bookSlice';
 import { authors, isPlural, checkLength } from '../../utils/bookInfo';
+import { selectCurrentPage, selectInputValue, selectSort } from '../../redux/selectors/searchSelector';
 
 import style from './BookItem.module.scss';
 
@@ -17,7 +18,9 @@ export const BookItem = ({ id, cover_i, title, author_name, first_publish_year, 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { inputValue, sort, currentPage } = useSelector(state => state.searchSlice);
+    const inputValue = useSelector(selectInputValue);
+    const sort = useSelector(selectSort);
+    const currentPage = useSelector(selectCurrentPage);
 
 
     const bookTitle = checkLength(title, 50);

@@ -6,6 +6,7 @@ import { CardButtons } from "../CardButtons";
 import { authors, isPlural, checkLength } from '../../utils/bookInfo';
 import { BookImg } from "../BookImg";
 import { getLastBook, getDescription } from "../../redux/slices/bookSlice";
+import { selecDescription, selectData } from "../../redux/selectors/bookSelector";
 
 import style from './BookCard.module.scss';
 
@@ -13,7 +14,9 @@ const { Title } = Typography;
 
 export const BookCard = () => {
     const dispatch = useDispatch();
-    const { description, data } = useSelector(state => state.bookSlice);
+
+    const description = useSelector(selecDescription);
+    const data = useSelector(selectData);
     const { title, author, cover, publishYear, editions, language, ratingAvarage } = data;
 
     const bookTitle = checkLength(title, 50);

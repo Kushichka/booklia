@@ -3,6 +3,7 @@ import { Typography } from 'antd';
 
 import { changeSort, changeCurrentPage, getAllBooks } from '../../redux/slices/searchSlice';
 import { sortValue } from '../../utils/bookInfo';
+import { selectInputValue, selectSort } from '../../redux/selectors/searchSelector';
 
 import style from './Sort.module.scss';
 
@@ -16,7 +17,9 @@ const types = [
 
 export const Sort = () => {
     const dispatch = useDispatch();
-    const { sort, inputValue } = useSelector(state => state.searchSlice);
+    
+    const sort = useSelector(selectSort);
+    const inputValue = useSelector(selectInputValue);
 
     const sortHandler = (e) => {
         const sortBy = sortValue(e.target.id);

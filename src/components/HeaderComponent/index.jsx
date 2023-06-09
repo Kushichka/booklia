@@ -1,8 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Input, Typography, Button, Space } from "antd";
 
 import { changeInputValue, changeCurrentPage, changeSort, getAllBooks } from '../../redux/slices/searchSlice';
+import { selectInputValue, selectIsLoading } from "../../redux/selectors/searchSelector";
 
 import style from './HeaderComponent.module.scss';
 
@@ -12,7 +13,9 @@ const { Search } = Input;
 export const HeaderComponent = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { isLoading, inputValue } = useSelector(state => state.searchSlice);
+
+    const isLoading = useSelector(selectIsLoading);
+    const inputValue = useSelector(selectInputValue);
 
     const logoStyles = {
         fontSize: '30px',
@@ -20,7 +23,7 @@ export const HeaderComponent = () => {
         cursor: 'pointer'
     }
 
-    const getBooks = async (title, sortBy='', page=1) => {
+    const getBooks = (title, sortBy='', page=1) => {
         navigate(`search?title=${encodeURIComponent(title)}`);
         
         dispatch(getAllBooks({title, sortBy, page}));
@@ -48,9 +51,8 @@ export const HeaderComponent = () => {
     return (
         <div className={style.header_wrapper}>
 
-            {/* <Link to={'/'} replace={true}> */}
-                <Text style={logoStyles} onClick={logoHandler}>Booklia</Text>
-            {/* </Link> */}
+            <Text style={logoStyles} onClick={logoHandler}>Booklia</Text>
+
             <Search
                 placeholder="Harry Potter"
                 onSearch={searchHandler}
@@ -60,6 +62,7 @@ export const HeaderComponent = () => {
                 style={{maxWidth: '300px'}}
                 value={inputValue}
             />
+
             <Space size='middle'>
                 <Button type="primary">Login</Button>
                 <Button>SignUp</Button>
