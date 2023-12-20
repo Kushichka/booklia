@@ -1,0 +1,16 @@
+
+@mixin btn_reset {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+}
+
+.buttonProfile {
+    @include btn_reset;
+    transition: all .2s;
+
+    &:hover {
+        cursor: pointer;
+        filter: brightness(.8);
+    }
+}

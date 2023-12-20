@@ -15,27 +15,22 @@ export const authors = (authors) => {
 }
 
 export const isPlural = (value, singularName) => {
-    let result = `unknown ${singularName}s`;
-
-    if(value) {
-        if(Array.isArray(value)) {
-            result = value.length > 1 ? `${value.length} ${singularName}s` : `${value.length} ${singularName}`;
-        } else {
-            result = value > 1 ? `${value} ${singularName}s` : `${value} ${singularName}`;
-        }
+    if(value && Array.isArray(value)) {
+        return value.length > 1 ? `${value.length} ${singularName}s` : `${value.length} ${singularName}`;
     }
 
-    return result;
+    if(value && !Array.isArray(value)) {
+        return value > 1 ? `${value} ${singularName}s` : `${value} ${singularName}`;
+    }
+
+    return `unknown ${singularName}s`;
 }
 
 export const checkLength = (string='', maxLength) => {
-    const result = string.length > maxLength ? `${string.slice(0, maxLength-3)}...` : string;
-
-    return result;
-
+    return string.length > maxLength ? `${string.slice(0, maxLength-3)}...` : string;
 };
 
-export const sortValue = (value) => (
-    value === 'relevance' ? '' : value
-)
+export const sortValue = (value) => {
+    return value === 'relevance' ? '' : value;
+}
 

@@ -1,79 +1,80 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchAllBooks } from "../../API/fetchAllBooks";
+// import { fetchAllBooks } from "../../API/fetchAllBooks";
 
 const initialState = {
     inputValue: '',
     sort: '',
-    currentPage: 1,
+    currentPage: 2,
     searchResults: [],
     resultError: '',
     isLoading: false
 }
 
-export const getAllBooks = createAsyncThunk(
-    'search/getAllBooks',
-    async ({title, sortBy, page}) => {
-        const res = await fetchAllBooks(title, sortBy, page);
+// export const getAllBooks = createAsyncThunk(
+//     'search/getAllBooks',
+//     async ({title, sortBy, page}) => {
+//         const res = await fetchAllBooks(title, sortBy, page);
 
-        return res;
-    }  
-);
+//         return res;
+//     }  
+// );
 
 const searchSlice = createSlice({
     name: 'search',
     initialState,
     reducers: {
-        changeInputValue: (state, {payload}) => {
+        setInputValue: (state, {payload}) => {
             state.inputValue = payload;
     },
-        changeSort: (state, {payload}) => {
+        setSort: (state, {payload}) => {
             const name = payload === 'relevance' ? '' : payload;
             
             state.sort = name;
-            localStorage.setItem('sort', name);
         },
-        changeCurrentPage: (state, action) => {
+        setCurrentPage: (state, action) => {
             state.currentPage = action.payload;
         },
-        changeSearchResults: (state, action) => {
+        setSearchResults: (state, action) => {
             state.searchResults = action.payload;
+            state.sort = '';
+            state.page = 1;
         },
-        changeResultError: (state, action) => {
+        setResultError: (state, action) => {
             state.resultError = action.payload;
         },
-        changeIsLoading: (state, action) => {
+        setIsLoading: (state, action) => {
             state.isLoading = action.payload;
         }
     },
-    extraReducers: builder => {
-        builder
-            .addCase(getAllBooks.pending, state => {
-                state.isLoading = true;
-            })
-            .addCase(getAllBooks.fulfilled, (state, {payload}) => {
-                if(!payload) {
-                    state.searchResults = [];
-                } else {
-                    state.searchResults = payload;
-                }
+    // extraReducers: builder => {
+    //     builder
+    //         .addCase(getAllBooks.pending, state => {
+    //             state.isLoading = true;
+    //         })
+    //         .addCase(getAllBooks.fulfilled, (state, {payload}) => {
+    //             if(!payload) {
+    //                 state.searchResults = [];
+    //             } else {
+    //                 state.searchResults = payload;
+    //             }
 
-                state.isLoading = false;
-            })
-            .addCase(getAllBooks.rejected, state => {
-                state.searchResults = [];
-                state.isLoading = false;
-            });
-    }
+    //             state.isLoading = false;
+    //         })
+    //         .addCase(getAllBooks.rejected, state => {
+    //             state.searchResults = [];
+    //             state.isLoading = false;
+    //         });
+    // }
 });
 
 export default searchSlice.reducer;
 
 export const {
-    changeInputValue, 
-    changeSort,
-    changeCurrentPage,
-    changeSearchResults,
-    changeResultError,
-    changeIsLoading
+    setInputValue, 
+    setSort,
+    setCurrentPage,
+    setSearchResults,
+    setResultError,
+    setIsLoading
 
 } = searchSlice.actions;

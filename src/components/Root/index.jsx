@@ -1,14 +1,40 @@
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { onAuthStateChanged } from "firebase/auth";
 import { Col, Row } from "antd";
 
+import { auth } from "../../API/firebase";
+import { setUser } from "../../redux/slices/userSlice";
 import { HeaderComponent } from "../HeaderComponent";
 
 import '../../index.css';
 
 export const Root = () => {
+    // const dispatch = useDispatch();
+
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, authUser => {
+    //         if (authUser) {
+    //             dispatch(setUser({
+    //                 name: authUser.displayName,
+    //                 uid: authUser.uid,
+    //                 authProvider: 'google',
+    //                 email: authUser.email,
+    //                 photoURL: authUser.photoURL
+    //             }));
+    //         } else {
+    //             dispatch(setUser(null));
+    //         }
+    //     });
+
+    //     return () => {
+    //         unsubscribe();
+    //     }
+    // }, []);
+
     return (
         <>
-            
             <header>
                 <HeaderComponent />
             </header>

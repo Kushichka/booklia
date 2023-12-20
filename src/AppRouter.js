@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { HomePage } from './pages/HomePage';
-import { SearchPage } from './pages/SearchPage';
-import { BookPage } from './pages/BookPage';
+import { HomePage } from './components/pages/HomePage';
+import { SearchPage } from './components/pages/SearchPage';
+import { BookPage } from './components/pages/BookPage';
 import { Root } from './components/Root';
-import { PageNotFound } from './pages/PageNotFound';
+import { PageNotFound } from './components/pages/PageNotFound';
 
 export const AppRouter = createBrowserRouter([
   {
@@ -21,7 +21,7 @@ export const AppRouter = createBrowserRouter([
         element: <SearchPage />
       },
       {
-        path: 'works/:bookId',
+        path: 'book/:bookId',
         element: <BookPage />
       }
     ]

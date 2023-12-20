@@ -5,17 +5,21 @@ import { RouterProvider } from 'react-router-dom';
 
 import { store } from './redux/store';
 import { AppRouter as router } from './AppRouter';
+import { Root } from './components/Root';
+import './API/firebase';
 
 import './index.css';
-
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+
+      <RouterProvider router={router}>
+        <Root />
+      </RouterProvider>
+      
     </Provider>
   </React.StrictMode>
 );

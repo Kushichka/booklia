@@ -1,44 +1,47 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Tooltip, Typography, Card, Rate } from "antd"
+import {memo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { Tooltip, Typography, Card } from "antd"
 
-import { CardButtons } from "../CardButtons";
-import { authors, isPlural, checkLength } from '../../utils/bookInfo';
-import { BookImg } from "../BookImg";
-import { getLastBook, getDescription } from "../../redux/slices/bookSlice";
-import { selecDescription, selectData } from "../../redux/selectors/bookSelector";
+import { CardButtons } from "../UI/CardButtons";
+import { authors, checkLength } from '../../utils/bookInfo';
+import { BookImg } from "../UI/BookImg";
+import { BookCardSkeleton } from './BookCardSkeleton';
+import { useGetBookByIdQuery } from "../../API/api";
 
 import style from './BookCard.module.scss';
 
 const { Title } = Typography;
 
-export const BookCard = () => {
-    const dispatch = useDispatch();
+export const BookCard = memo(() => {    
+    const location = useLocation();
+    const bookId = location.pathname.split('/book/')[1];
 
-    const description = useSelector(selecDescription);
-    const data = useSelector(selectData);
-    const { title, author, cover, publishYear, editions, language, ratingAvarage } = data;
+    const {data, isLoading} = useGetBookByIdQuery(bookId);
 
-    const bookTitle = checkLength(title, 50);
-    const bookAuthor = authors(author);
-    const bookPublishYear = publishYear ? publishYear : 'unknown';
-    const bookEditions = isPlural(editions, 'edition');
-    const bookLanguagesAmount = isPlural(language, 'language');
-    const bookLanguages = language ? language : ['unknown'];
-    const bookRating = ratingAvarage ? ratingAvarage : 0;
+    const bookData = {
+        cover: data?.volumeInfo.imageLinks.thumbnail,
+        title: checkLength(data?.volumeInfo.title, 50),
+        titleFull: data?.volumeInfo.title,
+        author: authors(data?.volumeInfo.authors),
+        publishedDate: data?.volumeInfo.publishedDate,
+        publisher: data?.volumeInfo.publisher,
+        language: data?.volumeInfo.language,
+        description: data?.volumeInfo.description
+    };
 
     useEffect(() => {
-        if (data.length === 0) {
-            const bookId = localStorage.getItem('bookId');
-            const bookTitle = localStorage.getItem('inputValue');
-            const sort = localStorage.getItem('sort');
-            const page = localStorage.getItem('page');
-
-            dispatch(getLastBook({ bookTitle, sort, page }));
-            dispatch(getDescription(bookId));
+        if (!isLoading && data) {
+            console.log(data);
         }
+    }, [isLoading, data]);
 
-    }, [data]);
+    if (isLoading) {
+        return (
+            <div className={style.bookCard_wrapper}>
+                <BookCardSkeleton />
+            </div>
+        )
+    }
 
     return (
         <div className={style.bookCard_wrapper}>
@@ -46,57 +49,46 @@ export const BookCard = () => {
                 extra={<CardButtons />}
                 title={
                     <div className={style.bookCard_title}>
-                        <Tooltip title={title}>
-                            <Title level={3}>{bookTitle}</Title>
+                        <Tooltip title={bookData.titleFull}>
+                            <Title level={3}>{bookData.title}</Title>
                         </Tooltip>
                     </div>}
             >
                 <div className={style.bookCard_inner}>
 
                     <div className={style.bookCard_left}>
-                        <BookImg cover={cover} size={'l'} />
+                        <BookImg cover={bookData.cover} />
                     </div>
 
                     <div className={style.bookCard_right}>
                         <p className={style.bookCard_right_title}>
                             <span>Author: </span>
-                            {bookAuthor}
-                        </p>
-
-                        <Tooltip title={bookRating.toFixed(1)}>
-                            <div className={style.bookCard_right_rate}>
-                                <p>Rating: </p>
-                                <Rate disabled allowHalf value={bookRating} />
-                            </div>
-                        </Tooltip>
-
-                        <p className={style.bookCard_right_title}>
-                            <span>First publish: </span>
-                            {bookPublishYear}
+                            {bookData.author}
                         </p>
 
                         <p className={style.bookCard_right_title}>
-                            <span>Editions: </span>
-                            {bookEditions}
+                            <span>Published: </span>
+                            {bookData.publishedDate}
                         </p>
 
-                        <Tooltip title={bookLanguages.join(', ')}>
-                            <p className={style.bookCard_right_title}>
-                                <span>Languages: </span>
-                                {bookLanguagesAmount}
-                            </p>
-                        </Tooltip>
+                        <p className={style.bookCard_right_title}>
+                            <span>Publisher: </span>
+                            {bookData.publisher}
+                        </p>
 
-                        {description && (
-                            <p className={style.bookCard_right_title}>
-                                <span>Description: </span>
-                                {description}
-                            </p>
-                        )}
+                        <p className={style.bookCard_right_title}>
+                            <span>Language: </span>
+                            {bookData.language}
+                        </p>
+
+                        <div className={style.bookCard_right_title}>
+                            <span>Description: </span>
+                            <div dangerouslySetInnerHTML={{ __html: bookData.description }} />
+                        </div>
                     </div>
 
                 </div>
             </Card>
         </div>
     )
-}
+});

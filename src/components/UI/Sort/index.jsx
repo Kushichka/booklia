@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from 'antd';
 
-import { changeSort, changeCurrentPage, getAllBooks } from '../../redux/slices/searchSlice';
-import { sortValue } from '../../utils/bookInfo';
-import { selectInputValue, selectSort } from '../../redux/selectors/searchSelector';
+import { setSort, setCurrentPage } from '../../../redux/slices/searchSlice';
+import { sortValue } from '../../../utils/bookInfo';
+import { selectInputValue, selectSort } from '../../../redux/selectors/searchSelector';
 
 import style from './Sort.module.scss';
 
@@ -26,10 +26,8 @@ export const Sort = () => {
         const title = inputValue;
         const page = 1;
 
-        dispatch(changeSort(sortBy));
-        dispatch(changeCurrentPage(1));
-
-        dispatch(getAllBooks({title, sortBy, page}));
+        dispatch(setSort(sortBy));
+        dispatch(setCurrentPage(1));
     }
 
     const elements = types.map(item => {

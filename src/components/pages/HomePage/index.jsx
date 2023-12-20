@@ -1,4 +1,4 @@
-import { Suggestions } from '../../components/Suggestions';
+import { Suggestions } from '../../Suggestions';
 
 import style from './HomePage.module.scss';
 
@@ -10,11 +10,6 @@ export const HomePage = () => {
             </p>
 
             <Suggestions />
-
-            <p className={style.homePage_description}>
-                <span>OR</span> <br />
-                Use search
-            </p>
         </div>
     )
 }

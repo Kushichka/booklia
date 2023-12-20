@@ -1,11 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { Card } from 'antd';
 
-import { changeInputValue, getAllBooks } from '../../redux/slices/searchSlice';
-
 export const Suggestions = () => {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const suggestions = [
@@ -18,14 +14,8 @@ export const Suggestions = () => {
         cursor: 'pointer'
     };
 
-    const clickHandler = (e) => {
+    const clickHandler = e => {
         const title = e.target.dataset.name;
-        const sortBy = '';
-        const page = 1;
-
-        dispatch(changeInputValue(title));
-
-        dispatch(getAllBooks({title, sortBy, page}));
         navigate(`search?title=${encodeURIComponent(title)}`);
     }
 

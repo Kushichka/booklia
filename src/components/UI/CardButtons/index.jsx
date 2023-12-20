@@ -1,10 +1,22 @@
+import { useSelector } from 'react-redux';
 import { BookOutlined, ReadOutlined } from '@ant-design/icons';
-import { Button, Row, Space, Tooltip } from 'antd';
+import { Button, Row, Space, Tooltip, message } from 'antd';
+
+import { selectUserData } from '../../../redux/selectors/userSelector';
 
 export const CardButtons = () => {
+    const userData = useSelector(selectUserData)
 
-    const clickHandler = () => {
-    
+    const onAddToLibrary = () => {
+        if(!userData?.uid) {
+            message.info('You need to login');
+        }
+    }
+
+    const onWantToRead = () => {
+        if(!userData?.uid) {
+            message.info('You need to login');
+        }
     }
 
     return (
@@ -14,6 +26,7 @@ export const CardButtons = () => {
                     <Button 
                         type="default" 
                         icon={<BookOutlined style={{ fontSize: '18px' }} />}
+                        onClick={onAddToLibrary}
                     />
                 </Tooltip>
 
@@ -21,6 +34,7 @@ export const CardButtons = () => {
                     <Button 
                         type="default" 
                         icon={<ReadOutlined style={{ fontSize: '18px' }} />} 
+                        onClick={onWantToRead}
                     />
                 </Tooltip>
             </Space>

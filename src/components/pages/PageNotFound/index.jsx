@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Button, Result } from 'antd';
 
-import { HeaderComponent } from '../../components/HeaderComponent';
+import { HeaderComponent } from '../../HeaderComponent';
 
 export const PageNotFound = () => {
     const navigate = useNavigate();

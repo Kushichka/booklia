@@ -1,73 +1,65 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { Input, Typography, Button, Space } from "antd";
+import { memo, useEffect, useState } from "react";
+import { notification } from "antd";
 
-import { changeInputValue, changeCurrentPage, changeSort, getAllBooks } from '../../redux/slices/searchSlice';
-import { selectInputValue, selectIsLoading } from "../../redux/selectors/searchSelector";
+import { Logo } from "../UI/Logo";
+import { SearchBar } from "../UI/SearchBar";
+import { UserMenu } from "../UserMenu";
 
 import style from './HeaderComponent.module.scss';
 
-const { Text } = Typography;
-const { Search } = Input;
+export const HeaderComponent = memo(() => {    
+    const [message, setMassage] = useState(null);
 
-export const HeaderComponent = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const [notificationApi, contextHolder] = notification.useNotification();
 
-    const isLoading = useSelector(selectIsLoading);
-    const inputValue = useSelector(selectInputValue);
-
-    const logoStyles = {
-        fontSize: '30px',
-        color: '#fff',
-        cursor: 'pointer'
+    const showNotification = (type, message) =>{
+        notificationApi[type]({
+            message: type,
+            description: message,
+        })
     }
 
-    const getBooks = (title, sortBy='', page=1) => {
-        navigate(`search?title=${encodeURIComponent(title)}`);
+    // useEffect(() => {
+    //     // if(data?.docs.length === 0) {
+    //     //     setMassage({
+    //     //         type: 'warning',
+    //     //         text: 'Wrong title. Please, try another one'
+    //     //     })
+
+    //     //     navigate('/', {replace: true});
+    //     // }
+
         
-        dispatch(getAllBooks({title, sortBy, page}));
-    };
 
-    const searchHandler = (value) => {
-        if(value.length !== 0) {
-            // dispatch(changeInputValue(value));
-            dispatch(changeCurrentPage(1));
-            dispatch(changeSort(''));
+    // }, [data]);
 
-            getBooks(value);
+    // useEffect(() => {
+    //     if(error) {
+    //         setMassage({
+    //             type: 'error',
+    //             text: 'An error occured. Please, try again'
+    //         })
+             
+    //         navigate('/', {replace: true});
+    //     }
+    // }, [error])
+
+    useEffect(() => {
+        if(message) {
+            showNotification(message.type, message.text);
+            setMassage(null);
         }
-    }
-
-    const onChangeHandler = (e) => {
-        dispatch(changeInputValue(e.target.value));
-    }
-
-    const logoHandler = () => {
-        navigate('/', {replace: true});
-        dispatch(changeInputValue(''));
-    }
+    }, [message]);
 
     return (
         <div className={style.header_wrapper}>
+            {contextHolder}
 
-            <Text style={logoStyles} onClick={logoHandler}>Booklia</Text>
+            <Logo />
 
-            <Search
-                placeholder="Harry Potter"
-                onSearch={searchHandler}
-                onChange={onChangeHandler}
-                allowClear
-                loading={isLoading}
-                style={{maxWidth: '300px'}}
-                value={inputValue}
-            />
+            <SearchBar />
 
-            <Space size='middle'>
-                <Button type="primary">Login</Button>
-                <Button>SignUp</Button>
-                {/* <Button shape="circle" size='large' icon={<UserOutlined />} /> */}
-            </Space>
+            <UserMenu />            
         </div>
     )
-}
+});

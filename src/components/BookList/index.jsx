@@ -1,22 +1,20 @@
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
+import { v4 } from "uuid";
 
 import { BookItem } from "../BookItem";
-import { selectSearchResults } from "../../redux/selectors/searchSelector";
 
 import style from './BookList.module.scss';
 
-export const BookList = () => {
-
-    const searchResults = useSelector(selectSearchResults);
-    
-     const content = useMemo(() => {
-         return searchResults.docs?.map(item => <BookItem key={item.key} id={item.key} {...item} />);
-     }, [searchResults]);
+export const BookList = ({ data }) => {
+    const items = data?.map(item => (
+        <BookItem 
+            key={item.id + v4()} 
+            data={item}
+        />
+    ));
 
     return (
         <div className={style.book_list_wrapper}>
-            {content}
+            {items}
         </div>
     );
-};
+}
