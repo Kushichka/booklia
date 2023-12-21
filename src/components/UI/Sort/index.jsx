@@ -1,37 +1,25 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from 'antd';
 
-import { setSort, setCurrentPage } from '../../../redux/slices/searchSlice';
-import { sortValue } from '../../../utils/bookInfo';
-import { selectInputValue, selectSort } from '../../../redux/selectors/searchSelector';
+import { setSort } from '../../../redux/slices/searchSlice';
+import { selectSort } from '../../../redux/selectors/searchSelector';
 
 import style from './Sort.module.scss';
 
 const { Text } = Typography;
 const types = [
     { id: 'relevance', name: 'Relevance' },
-    { id: 'editions', name: 'Most Editions' },
-    { id: 'new', name: 'New' },
-    { id: 'old', name: 'Old' }
+    { id: 'newest', name: 'Newest' }
 ]
 
 export const Sort = () => {
     const dispatch = useDispatch();
-    
     const sort = useSelector(selectSort);
-    const inputValue = useSelector(selectInputValue);
 
-    const sortHandler = (e) => {
-        const sortBy = sortValue(e.target.id);
-        const title = inputValue;
-        const page = 1;
-
-        dispatch(setSort(sortBy));
-        dispatch(setCurrentPage(1));
-    }
+    const sortHandler = (e) => dispatch(setSort(e.target.id));
 
     const elements = types.map(item => {
-        const type = sort === item.id || (item.id === 'relevance' && sort === '') ? 'default' : 'secondary';
+        const type = sort === item.id ? 'default' : 'secondary';
 
         return (
             <li key={item.id} className={style.item}>
@@ -43,6 +31,7 @@ export const Sort = () => {
     return (
         <div className={style.wrapper}>
             <Text>Sort by:</Text>
+
             <ul className={style.list}>
                 {elements}
             </ul>

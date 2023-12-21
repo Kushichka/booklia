@@ -30,7 +30,3 @@ export const checkLength = (string='', maxLength) => {
     return string.length > maxLength ? `${string.slice(0, maxLength-3)}...` : string;
 };
 
-export const sortValue = (value) => {
-    return value === 'relevance' ? '' : value;
-}
-
