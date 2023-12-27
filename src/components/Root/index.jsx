@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { onAuthStateChanged } from "firebase/auth";
-import { Col, Row } from "antd";
+import { Col, Row, ConfigProvider } from "antd";
 
 import { auth } from "../../API/firebase";
 import { setUser } from "../../redux/slices/userSlice";
 import { HeaderComponent } from "../HeaderComponent";
 
-import '../../index.css';
+import { theme } from "../../styles/theme";
 
 export const Root = () => {
     // const dispatch = useDispatch();
@@ -35,17 +35,19 @@ export const Root = () => {
 
     return (
         <>
-            <header>
-                <HeaderComponent />
-            </header>
+            <ConfigProvider theme={theme}>
+                <header>
+                    <HeaderComponent />
+                </header>
 
-            <main>
-                <Row justify='center' style={{margin: '20px 20px'}}>
-                    <Col span={22}>
-                        <Outlet />
-                    </Col>
-                </Row>
-            </main>
+                <main>
+                    <Row justify='center' style={{ margin: '20px 20px' }}>
+                        <Col span={22}>
+                            <Outlet />
+                        </Col>
+                    </Row>
+                </main>
+            </ConfigProvider>
         </>
     )
 }

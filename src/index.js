@@ -8,7 +8,7 @@ import { AppRouter as router } from './AppRouter';
 import { Root } from './components/Root';
 import './API/firebase';
 
-import './index.css';
+import './styles/index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -19,7 +19,7 @@ root.render(
       <RouterProvider router={router}>
         <Root />
       </RouterProvider>
-      
+
     </Provider>
   </React.StrictMode>
 );

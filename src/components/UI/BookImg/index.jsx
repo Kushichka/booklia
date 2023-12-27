@@ -2,23 +2,24 @@ import { Image, Skeleton } from 'antd';
 
 import style from './BookImg.module.scss';
 
-export const BookImg = ({ cover }) => {
+export const BookImg = ({ cover, width }) => {
+
+    if (!cover) {
+        return (
+            <div className={style.img_empty}>
+                <Skeleton.Image />
+            </div>
+        )
+    }
+
     return (
-        <>
-            {!cover ? (
-                <div className={style.img_empty}>
-                    <Skeleton.Image />
-                </div>
-            )
-            :
-            (
-                <Image
-                    src={cover + '&fife=h300'}
-                    preview={{
-                        src: `${cover}&fife=h900`
-                    }}
-                />
-            )}
-        </>
+        <Image
+            src={cover + `&fife=w${width}`}
+            width={width}
+            preview={{
+                src: `${cover}&fife=w${width * 3}` // preview is 3 times larger
+            }}
+            style={{borderRadius: '16px 0 16px 0'}}
+        />
     );
 };

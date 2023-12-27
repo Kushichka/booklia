@@ -35,7 +35,7 @@ export const UserMenu = memo(() => {
                     />
                 </div>
             ) : (
-                <Button ghost>Login</Button>
+                <Button type="primary">Login</Button>
             )}
         </>
     )

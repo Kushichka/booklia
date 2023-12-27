@@ -1,12 +1,12 @@
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Pagination, Row } from "antd"
+import { Pagination, Flex } from "antd"
 
 import { BookListSkeleton } from "../../BookList/BookListSkeleton";
 import { BookList } from '../../BookList';
 import { Sort } from '../../UI/Sort';
 import { useGetBooksQuery } from "../../../API/api";
-import { selectSort } from "../../../redux/selectors/searchSelector";
+import { selectCurrentPage, selectSort } from "../../../redux/selectors/searchSelector";
 import { setCurrentPage } from "../../../redux/slices/searchSlice";
 
 export const SearchPage = () => {
@@ -14,44 +14,45 @@ export const SearchPage = () => {
 
     const [searchParams] = useSearchParams();
     const searchValue = searchParams.get('title');
+    const encodedSearchValue = encodeURIComponent(searchValue);
 
-    // const currentPage = useSelector(selectCurrentPage);
     const sortBy = useSelector(selectSort);
+    const encodedSortBy = encodeURIComponent(sortBy);
 
-    const { data, isFetching } = useGetBooksQuery([searchValue, sortBy]);
+    const currentPage = useSelector(selectCurrentPage);
+    const nextPageIndex = currentPage * 10 - 10;
 
-    const paginationHandler = (pageValue) => {
-        // const sortBy = sortValue(sort);
-        // const page = pageValue;
 
-        // dispatch(setCurrentPage(page));
-    }
+    const { data, isFetching } = useGetBooksQuery([encodedSearchValue, encodedSortBy, nextPageIndex]);
+
+    const paginationHandler = (pageValue) =>
+        dispatch(setCurrentPage(pageValue));
 
     if (isFetching) {
         return (
-            <Row justify='center'>
+            <Flex justify='center'>
                 <BookListSkeleton />
-            </Row>
+            </Flex>
         )
     }
 
     return (
-        <Row justify='center'>
-            <Col>
-                <Sort />
+        <Flex 
+            vertical
+            align="center"
+            gap={20}
+        >
+            <Sort />
 
-                <BookList data={data?.items} />
+            <BookList data={data?.items} />
 
-                <Pagination
-                    current={1} // for test
-                    // current={currentPage}
-                    onChange={paginationHandler}
-                    // total={data?.numFound || 1}
-                    total={23} // for test
-                    showSizeChanger={false}
-                    style={{ textAlign: 'center' }}
-                />
-            </Col>
-        </Row>
+            <Pagination
+                current={currentPage}
+                onChange={paginationHandler}
+                total={data?.totalItems}
+                showSizeChanger={false}
+                style={{ textAlign: 'center' }}
+            />
+        </Flex>
     );
 }

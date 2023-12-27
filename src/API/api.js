@@ -7,8 +7,8 @@ export const booksApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: baseURL }),
     endpoints: builder => ({
         getBooks: builder.query({
-            query: ([title, sortBy]) => 
-                `?q=intitle:${title}&orderBy=${sortBy}&printType=books&key=${apiKey}`
+            query: ([title, sortBy, startIndex]) => 
+                `?q=intitle:${title}&printType=books&orderBy=${sortBy}&startIndex=${startIndex}&maxResults=10&key=${apiKey}`
         }),
         getBookById: builder.query({
             query: (id) => `/${id}`

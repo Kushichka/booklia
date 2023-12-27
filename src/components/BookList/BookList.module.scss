@@ -2,11 +2,9 @@
 .book_list {
     
     &_wrapper {
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(2, 500px);
+        grid-template-rows: repeat(5, 1fr);
         gap: 20px;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 20px;
     }
 }

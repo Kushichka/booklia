@@ -4,6 +4,14 @@ import { Button, Row, Space, Tooltip, message } from 'antd';
 
 import { selectUserData } from '../../../redux/selectors/userSelector';
 
+const buttonStyle = { 
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    fontSize: '18px'
+ };
+
 export const CardButtons = () => {
     const userData = useSelector(selectUserData)
 
@@ -24,16 +32,14 @@ export const CardButtons = () => {
             <Space>
                 <Tooltip title='Add to library'>
                     <Button 
-                        type="default" 
-                        icon={<BookOutlined style={{ fontSize: '18px' }} />}
+                        icon={<BookOutlined style={buttonStyle} />}
                         onClick={onAddToLibrary}
                     />
                 </Tooltip>
 
                 <Tooltip title='Want to read'>
                     <Button 
-                        type="default" 
-                        icon={<ReadOutlined style={{ fontSize: '18px' }} />} 
+                        icon={<ReadOutlined style={buttonStyle} />} 
                         onClick={onWantToRead}
                     />
                 </Tooltip>

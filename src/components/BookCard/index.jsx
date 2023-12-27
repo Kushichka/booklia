@@ -57,7 +57,7 @@ export const BookCard = memo(() => {
                 <div className={style.bookCard_inner}>
 
                     <div className={style.bookCard_left}>
-                        <BookImg cover={bookData.cover} />
+                        <BookImg cover={bookData.cover} width={400}/>
                     </div>
 
                     <div className={style.bookCard_right}>
