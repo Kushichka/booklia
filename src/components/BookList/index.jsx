@@ -1,8 +1,7 @@
+import { Flex } from "antd";
 import { v4 } from "uuid";
 
 import { BookItem } from "../BookItem";
-
-import style from './BookList.module.scss';
 
 export const BookList = ({ data }) => {
     const items = data?.map(item => (
@@ -13,8 +12,14 @@ export const BookList = ({ data }) => {
     ));
 
     return (
-        <div className={style.book_list_wrapper}>
+        <Flex
+            style={{
+                maxWidth: "calc(1000px + 20px)"
+            }}
+            wrap="wrap"
+            gap={20}
+        >
             {items}
-        </div>
+        </Flex>
     );
 }

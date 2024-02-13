@@ -5,6 +5,7 @@ import { SearchPage } from './components/pages/SearchPage';
 import { BookPage } from './components/pages/BookPage';
 import { Root } from './components/Root';
 import { PageNotFound } from './components/pages/PageNotFound';
+import { SignInForm } from './components/SignInForm';
 
 export const AppRouter = createBrowserRouter([
   {
@@ -23,6 +24,10 @@ export const AppRouter = createBrowserRouter([
       {
         path: 'book/:bookId',
         element: <BookPage />
+      },
+      {
+        path: 'login',
+        element: <SignInForm />
       }
     ]
   }  

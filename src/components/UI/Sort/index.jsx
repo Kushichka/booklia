@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Typography } from 'antd';
+import { Typography, Flex } from 'antd';
 
 import { setSort } from '../../../redux/slices/searchSlice';
 import { selectSort } from '../../../redux/selectors/searchSelector';
@@ -29,12 +29,12 @@ export const Sort = () => {
     })
 
     return (
-        <div className={style.wrapper}>
+        <Flex justify='center' align='center' gap={10}>
             <Text>Sort by:</Text>
 
             <ul className={style.list}>
                 {elements}
             </ul>
-        </div>
+        </Flex>
     )
 }

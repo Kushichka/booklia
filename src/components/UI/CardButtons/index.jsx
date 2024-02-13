@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { BookOutlined, ReadOutlined } from '@ant-design/icons';
-import { Button, Row, Space, Tooltip, message } from 'antd';
+import { Button, Flex, Tooltip, message } from 'antd';
 
 import { selectUserData } from '../../../redux/selectors/userSelector';
 
@@ -28,22 +28,20 @@ export const CardButtons = () => {
     }
 
     return (
-        <Row justify='center'>
-            <Space>
-                <Tooltip title='Add to library'>
-                    <Button 
-                        icon={<BookOutlined style={buttonStyle} />}
-                        onClick={onAddToLibrary}
-                    />
-                </Tooltip>
+        <Flex gap={10} justify='center'>
+            <Tooltip title='Add to library'>
+                <Button 
+                    icon={<BookOutlined style={buttonStyle} />}
+                    onClick={onAddToLibrary}
+                />
+            </Tooltip>
 
-                <Tooltip title='Want to read'>
-                    <Button 
-                        icon={<ReadOutlined style={buttonStyle} />} 
-                        onClick={onWantToRead}
-                    />
-                </Tooltip>
-            </Space>
-        </Row>
+            <Tooltip title='Want to read'>
+                <Button 
+                    icon={<ReadOutlined style={buttonStyle} />} 
+                    onClick={onWantToRead}
+                />
+            </Tooltip>
+        </Flex>
     );
 };

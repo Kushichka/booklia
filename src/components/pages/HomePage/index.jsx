@@ -1,15 +1,23 @@
+import { Flex, Typography } from 'antd';
+
 import { Suggestions } from '../../Suggestions';
 
-import style from './HomePage.module.scss';
+const {Title} = Typography;
 
 export const HomePage = () => {
     return (
-        <div className={style.homePage_wrapper}>
-            <p className={style.homePage_title}>
+        <Flex
+            vertical
+            justify='center'
+            align='center'
+            gap={20}
+            flex={2}
+        >
+            <Title level={4}>
                 Recommendations in this month
-            </p>
+            </Title>
 
             <Suggestions />
-        </div>
+        </Flex>
     )
 }

@@ -1,11 +1,9 @@
 import { memo, useEffect, useState } from "react";
-import { notification } from "antd";
+import { notification, Flex } from "antd";
 
 import { Logo } from "../UI/Logo";
 import { SearchBar } from "../UI/SearchBar";
 import { UserMenu } from "../UserMenu";
-
-import style from './HeaderComponent.module.scss';
 
 export const HeaderComponent = memo(() => {    
     const [message, setMassage] = useState(null);
@@ -52,7 +50,15 @@ export const HeaderComponent = memo(() => {
     }, [message]);
 
     return (
-        <div className={style.header_wrapper}>
+        <Flex
+            justify="space-between"
+            gap={20}
+            align="center"
+            style={{
+                backgroundColor: '#030852',
+                padding: '10px 20px'
+            }} 
+        >
             {contextHolder}
 
             <Logo />
@@ -60,6 +66,6 @@ export const HeaderComponent = memo(() => {
             <SearchBar />
 
             <UserMenu />            
-        </div>
+        </Flex>
     )
 });

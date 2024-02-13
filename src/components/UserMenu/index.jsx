@@ -1,4 +1,5 @@
 import { memo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button } from "antd";
 
@@ -9,6 +10,7 @@ import { ProfileDropdownMenu } from '../ProfileDropdownMenu';
 import style from './UserMenu.module.scss';
 
 export const UserMenu = memo(() => {
+    const navigate = useNavigate();
     const userData = useSelector(selectUserData);
 
     const buttonProfileRef = useRef(null);
@@ -19,24 +21,31 @@ export const UserMenu = memo(() => {
         setIsOpenModal(!openModal);
     }
 
-    return (
-        <>
-            {userData.isLogged ? (
-                <div className={style.userMenu_wrapper}>
-                    <ButtonProfile
-                        photoURL={userData.photoURL}
-                        dropDownMenuHandler={dropDownMenuHandler}
-                    />
+    const loginHandler = () => navigate('/login');
 
-                    <ProfileDropdownMenu
-                        openModal={openModal}
-                        dropDownMenuHandler={dropDownMenuHandler}
-                        buttonProfileRef={buttonProfileRef}
-                    />
-                </div>
-            ) : (
-                <Button type="primary">Login</Button>
-            )}
-        </>
+    if (!userData.isLogged) {
+        return (
+            <Button 
+                type="primary"
+                onClick={loginHandler}
+            >
+                Login
+            </Button>
+        )
+    }
+
+    return (
+        <div className={style.userMenu_wrapper}>
+            <ButtonProfile
+                photoURL={userData.photoURL}
+                dropDownMenuHandler={dropDownMenuHandler}
+            />
+
+            <ProfileDropdownMenu
+                openModal={openModal}
+                dropDownMenuHandler={dropDownMenuHandler}
+                buttonProfileRef={buttonProfileRef}
+            />
+        </div>
     )
 });

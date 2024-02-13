@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Card } from 'antd';
+import { Card, Flex } from 'antd';
 
 export const Suggestions = () => {
     const navigate = useNavigate();
@@ -9,9 +9,13 @@ export const Suggestions = () => {
         'The Hunger Games', 'Eragon', 'A Game of Thrones '
     ];
 
-    const styles = {
+    const cardStyle = {
         textAlign: 'center',
         cursor: 'pointer'
+    };
+
+    const shadowStyle = {
+        boxShadow: '0 1px 2px -2px rgba(0, 0, 0, 0.16),0 3px 6px 0 rgba(0, 0, 0, 0.12),0 5px 12px 4px rgba(0, 0, 0, 0.09)'
     };
 
     const clickHandler = e => {
@@ -20,14 +24,16 @@ export const Suggestions = () => {
     }
 
     const elements = suggestions.map((item, i) => (
-        <Card.Grid key={i} data-name={item} style={styles} onClick={clickHandler}>
+        <Card.Grid key={i} data-name={item} style={cardStyle} onClick={clickHandler}>
             {item}
         </Card.Grid>
     ));
 
   return (
-    <Card>
-        {elements}
-    </Card>
+    <Flex>
+        <Card style={shadowStyle}>
+            {elements}
+        </Card>
+    </Flex>
   )
 }

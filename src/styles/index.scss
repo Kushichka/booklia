@@ -1,15 +1,19 @@
 @use './colors.scss' as colors;
 
+html {
+    box-sizing: border-box;
+}
+
 body {
     background-color: colors.$background;
     cursor: default;
-    user-select: none;
 }
 
 ul,
 li,
 p,
 h3,
+h4,
 body {
     margin: 0;
     padding: 0;
