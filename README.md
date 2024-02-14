@@ -7,6 +7,8 @@ Book search site using [Google Books API](https://books.google.pl/)
 - [Ant Design](https://ant.design/)
 - Scss
 
+[Welcome](https://booklia.vercel.app/)
+
 **Known bugs:**
 - API has a problem with the "totalItems" variable, due to which pagination may not work correctly
 
