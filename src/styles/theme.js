@@ -12,6 +12,11 @@ export const theme = {
         Tooltip: {
             colorBgSpotlight: '#B43E8F',
             sizePopupArrow: 16
+        },
+        Modal: {
+            // headerBg: '#B43E8F',
+            titleColor: '#B43E8F',
+            titleFontSize: 24
         }
     }
 };

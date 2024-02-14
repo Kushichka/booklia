@@ -1,5 +1,12 @@
-import { Button } from "antd"
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
+import googleButton from '../../../assets/googleButton.svg';
+
+const resetStyle = {
+    backgroundColor: 'transparent',
+    border: 'none',
+    cursor: 'pointer'
+}
 
 export const SignInWithGoogleButton = () => {
 
@@ -33,8 +40,11 @@ export const SignInWithGoogleButton = () => {
     }
 
     return (
-        <Button onClick={signInHandler}>
-            SignIn with Google
-        </Button>
+        <button 
+            onClick={signInHandler}
+            style={resetStyle}
+        >
+            <img src={googleButton} alt="Sign in With Google" />
+        </button>
     )
 }

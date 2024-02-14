@@ -100,7 +100,6 @@ export const BookCard = memo(() => {
                                 Rating:
                             </Text>
                             <Rate defaultValue={data?.volumeInfo.averageRating} allowHalf disabled />
-
                             {data?.volumeInfo.averageRating && 
                                 <Tag color="gold">
                                     {data?.volumeInfo.ratingsCount}
