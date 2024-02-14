@@ -1,19 +1,21 @@
-import { memo, useState } from "react";
-import { useSelector } from "react-redux";
-import { Button } from "antd";
+import { memo, useEffect, useState } from "react";
+import { Button, Space, Typography } from "antd";
 
-import { selectUserData } from "../../redux/selectors/userSelector";
 import { ButtonProfile } from "../UI/ButtonProfile";
 import { SignInModal } from "../UI/SignInModal";
 import { SignUpModal } from "../UI/SignUpModal";
-
-import style from './UserMenu.module.scss';
+import { useFirebaseAuthState } from '../../hooks/useFirebaseAuthState';
 
 export const UserMenu = memo(() => {
-    const userData = useSelector(selectUserData);
-
     const [isOpenLogin, setIsOpenLogin] = useState(false);
     const [isOpenRegister, setIsOpenRegister] = useState(false);
+    const [userData, setUserData] = useState(null);
+
+    const user = useFirebaseAuthState();
+
+    useEffect(() => {
+        setUserData(user);
+    }, [user]);
 
     const showLogin = () => {
         setIsOpenLogin(true);
@@ -28,7 +30,7 @@ export const UserMenu = memo(() => {
     const hideLogin = () => setIsOpenLogin(false);
     const hideRegister = () => setIsOpenRegister(false);
 
-    if (!userData.isLogged) {
+    if (!userData) {
         return (
             <>
                 <Button
@@ -45,10 +47,12 @@ export const UserMenu = memo(() => {
     }
 
     return (
-        <div className={style.userMenu_wrapper}>
-            <ButtonProfile
-                photoURL={userData.photoURL}
-            />
-        </div>
+        <Space style={{ cursor: 'pointer' }}>
+            <Typography.Text strong style={{ color: '#fff' }}>
+                {userData.displayName}
+            </Typography.Text>
+
+            <ButtonProfile photoURL={userData.photoURL} />
+        </Space>
     )
 });

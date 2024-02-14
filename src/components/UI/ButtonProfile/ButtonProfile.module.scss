@@ -1,12 +1,8 @@
 
-@mixin btn_reset {
+.buttonProfile {
     padding: 0;
     background-color: transparent;
     border: none;
-}
-
-.buttonProfile {
-    @include btn_reset;
     transition: all .2s;
 
     &:hover {

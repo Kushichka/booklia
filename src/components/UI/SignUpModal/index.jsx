@@ -101,10 +101,13 @@ export const SignUpModal = ({isOpenRegister, hide, openLogin}) => {
                         </Space>
 
                         <Divider plain>OR</Divider>
-                        <SignInWithGoogleButton />
                     </Flex>
                 </Form.Item>
             </Form>
+            
+            <Flex justify="center">
+                <SignInWithGoogleButton />
+            </Flex>
         </Modal>
     )
 }

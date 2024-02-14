@@ -87,10 +87,13 @@ export const SignInModal = ({isOpenLogin, hide, openRegister}) => {
                         </Space>
 
                         <Divider plain>OR</Divider>
-                        <SignInWithGoogleButton />
                     </Flex>
                 </Form.Item>
             </Form>
+            
+            <Flex justify="center">
+                <SignInWithGoogleButton />
+            </Flex>
         </Modal>
     )
 }
